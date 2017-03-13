@@ -2,6 +2,10 @@ var request = require('request');
 var fs = require('fs');
 const credentials = require('./credentials');
 
+if (!process.argv[2] || !process.argv[3]) {
+  return console.log("Please enter required input (Owner and Repo)")
+}
+
 var owner = process.argv[2], repo = process.argv[3];
 
 console.log('Welcome to the GitHub Avatar Downloader!');
