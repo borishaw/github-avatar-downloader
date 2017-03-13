@@ -1,6 +1,9 @@
 var request = require('request');
 var fs = require('fs');
-const credentials = require('./credentials');
+require('dotenv').config();
+
+
+//const credentials = require('./credentials');
 
 if (!process.argv[2] || !process.argv[3]) {
   return console.log("Please enter required input (Owner and Repo)")
@@ -12,8 +15,8 @@ console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
 
-  const GITHUB_USER = credentials.userName;
-  const GITHUB_TOKEN = credentials.token;
+  const GITHUB_USER = process.env.userName;
+  const GITHUB_TOKEN = process.env.token;
 
   var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
 
