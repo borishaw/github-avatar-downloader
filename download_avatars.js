@@ -27,15 +27,15 @@ getRepoContributors("jquery", "jquery", function(err, result) {
 
   console.log("Errors:", err);
 
-
-  var avatarArray = [];
   var counter = 0;
   result = JSON.parse(result);
   for (counter; counter < result.length; counter++){
-    avatarArray.push(result[counter].avatar_url);
+    var filePath = "avatars/" + result[counter].login + ".jpeg";
+    var imgUrl = result[counter].avatar_url;
+    downloadImageByURL(imgUrl, filePath);
   }
-  console.log(avatarArray);
-  return avatarArray;
+
+
 });
 
 function downloadImageByURL(url, filePath) {
@@ -60,4 +60,4 @@ function downloadImageByURL(url, filePath) {
     })
 }
 
-downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg");
+//downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg");
