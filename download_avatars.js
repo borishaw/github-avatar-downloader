@@ -2,6 +2,8 @@ var request = require('request');
 var fs = require('fs');
 const credentials = require('./credentials');
 
+var owner = process.argv[2], repo = process.argv[3];
+
 console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
@@ -23,19 +25,20 @@ function getRepoContributors(repoOwner, repoName, cb) {
     
 }
 
-getRepoContributors("jquery", "jquery", function(err, result) {
+getRepoContributors(owner, repo, function(err, result) {
 
-  console.log("Errors:", err);
-
-  var counter = 0;
-  result = JSON.parse(result);
-  for (counter; counter < result.length; counter++){
-    var filePath = "avatars/" + result[counter].login + ".jpeg";
-    var imgUrl = result[counter].avatar_url;
-    downloadImageByURL(imgUrl, filePath);
+  if (err) {
+    console.log("Errors:", err);
+  } else {
+    var counter = 0;
+    result = JSON.parse(result);
+    for (counter; counter < result.length; counter++){
+      var filePath = "avatars/" + result[counter].login + ".jpeg";
+      var imgUrl = result[counter].avatar_url;
+      downloadImageByURL(imgUrl, filePath);
+    }
+    console.log("All avatar images downloaded.");
   }
-
-
 });
 
 function downloadImageByURL(url, filePath) {
@@ -51,13 +54,6 @@ function downloadImageByURL(url, filePath) {
         .on('data', function (chunk) {
           image += chunk;
         })
-        .on('end', function () {
-          console.log("Avatar image downloaded.")
-        })
-        .pipe(fs.createWriteStream(filePath).on('finish', function () {
-          console.log("Avatar image saved.");
-        }))
+        .pipe(fs.createWriteStream(filePath))
     })
 }
-
-//downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg");
